@@ -40,50 +40,76 @@ To design and simulate a seven-segment display driver using Verilog HDL, and ver
 
 ## Verilog Code for Seven-Segment Display  
 
-```verilog
-// seven_segment_display.v
-module seven_segment_display (
-    input wire [3:0] binary_input,
-    output reg [6:0] seg_output
-);
-
-always @(*) begin
-    case (binary_input)
-        
-        
-        default: seg_output = 7'b0000000; // blank or error
-    endcase
-end
-
+```
+`timescale 1ns / 1ps
+module bcd_to_7seg(bcd, seg);
+input [3:0] bcd;
+output reg [6:0] seg;
+always @(bcd)
+case (bcd)
+0: seg = 6'b0000001;
+1: seg = 6'b1001111;
+2: seg = 6'b0010010;
+3: seg = 6'b0000110;
+4: seg = 6'b1001100;
+5: seg = 6'b0100100;
+6: seg = 6'b0100000;
+7: seg = 6'b0001111;
+8: seg = 6'b0000000;
+9: seg = 6'b0000100;
+default : seg = 6'b1111111;
+endcase
 endmodule
+
 ```
 ## Testbench for Seven-Segment Display
-```verilog
+```
+module bcd_to_7seg_tb;
 
-`timescale 1ns / 1ps
-module seven_segment_display_tb;
-// Inputs
-reg [3:0] binary_input;
-// Outputs
-wire [6:0] seg_output;
-// Instantiate the Unit Under Test (UUT)
-seven_segment_display uut (
-    .binary_input(binary_input),
-    .seg_output(seg_output)
+reg [3:0] bcd;
+wire [6:0] seg;
+
+
+bcd_to_7seg uut (
+    .bcd(bcd),
+    .seg(seg)
 );
-// Test procedure
+
+
 initial begin
-    // Initialize inputs
-    binary_input = 4'b0000;
+    
+    bcd = 4'b0100;
 
+    #10 bcd = 4'd0;
+    $display("Time: %0t, BCD: %b, 7-seg: %b", $time, bcd, seg);
+    #10 bcd = 4'd1;
+    $display("Time: %0t, BCD: %b, 7-seg: %b", $time, bcd, seg);
+    #10 bcd = 4'd2;
+    $display("Time: %0t, BCD: %b, 7-seg: %b", $time, bcd, seg);
+    #10 bcd = 4'd3;
+    $display("Time: %0t, BCD: %b, 7-seg: %b", $time, bcd, seg);
+    #10 bcd = 4'd4;
+    $display("Time: %0t, BCD: %b, 7-seg: %b", $time, bcd, seg);
+    #10 bcd = 4'd5;
+    $display("Time: %0t, BCD: %b, 7-seg: %b", $time, bcd, seg);
+    #10 bcd = 4'd6;
+    $display("Time: %0t, BCD: %b, 7-seg: %b", $time, bcd, seg);
+    #10 bcd = 4'd7;
+    $display("Time: %0t, BCD: %b, 7-seg: %b", $time, bcd, seg);
+    #10 bcd = 4'd8;
+    $display("Time: %0t, BCD: %b, 7-seg: %b", $time, bcd, seg);
+    #10 bcd = 4'd9;
+    $display("Time: %0t, BCD: %b, 7-seg: %b", $time, bcd, seg);
+
+   
+    #10 $finish;
 end
-
 
 endmodule
 ```
 ## Simulated Output
 
-_____ Keep Simulated output ___________
+<img width="1920" height="1080" alt="Screenshot 2025-08-29 151127" src="https://github.com/user-attachments/assets/aadfb461-176a-4cbc-b2af-11cf297d88e9" />
 
 ---
 
